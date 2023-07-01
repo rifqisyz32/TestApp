@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:test_app/pages/product_page.dart';
+import 'package:test_app/pages/products/product_page.dart';
+
 import 'package:test_app/widgets/list_map_widget.dart';
 
 class TabPage extends StatelessWidget {
@@ -9,33 +10,6 @@ class TabPage extends StatelessWidget {
   final List<Tab> myTab = [
     Tab(text: "Mapping"),
     Tab(text: "Grid View"),
-  ];
-
-  final List<Map<String, dynamic>> myMap = const [
-    {
-      "Name": "Kamisato Ayaka",
-      "Image": "assets/images/FnhcYXYWAAEWoJx.jpeg",
-      "Title": "Shirasagi Himegimi",
-      "FavColor": ["Blue", "White", "Purple"],
-    },
-    {
-      "Name": "Raiden Ei",
-      "Image": "assets/images/FlONSy7aAAEoKNN.jpeg",
-      "Title": "Eternity",
-      "FavColor": ["Purple", "White", "Black"],
-    },
-    {
-      "Name": "Keqing",
-      "Image": "assets/images/FlARvjlaAAEmuDc.jpeg",
-      "Title": "Yuheng of Liyue",
-      "FavColor": ["Purple", "Black", "Blue"],
-    },
-    {
-      "Name": "Sangonomiya Kokomi",
-      "Image": "assets/images/Fpk100tacAA1WbU.jpeg",
-      "Title": "The Divine Priestess",
-      "FavColor": ["Blue", "Pink", "White", "Purple", "White", "Black"],
-    },
   ];
 
   final List<Container> gridContainer = List.generate(
@@ -68,12 +42,7 @@ class TabPage extends StatelessWidget {
               ),
             ),
           ),
-          title: Text(
-            "Tab Page",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: Text("Tab Page"),
           bottom: TabBar(
             tabs: myTab,
             labelStyle: TextStyle(
@@ -88,7 +57,7 @@ class TabPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            listViewMap(mapData: myMap),
+            MapWidget(),
             GridView.count(
               padding: EdgeInsets.all(16),
               crossAxisCount: 3,

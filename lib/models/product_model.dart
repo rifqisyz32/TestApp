@@ -1,4 +1,6 @@
-class ProductModel {
+import 'package:flutter/material.dart';
+
+class ProductModel with ChangeNotifier {
   String id, imageUrl, name, title, description;
   double price;
   bool isFavorite;
@@ -12,4 +14,9 @@ class ProductModel {
     required this.price,
     this.isFavorite = false,
   });
+
+  void setFavorite() {
+    isFavorite = !isFavorite;
+    notifyListeners();
+  }
 }

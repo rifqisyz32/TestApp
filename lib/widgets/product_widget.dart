@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/pages/product_detail_page.dart';
+import 'package:test_app/models/product_model.dart';
+import 'package:test_app/pages/products/product_detail_page.dart';
+import 'package:test_app/providers/cart_provider.dart';
 import 'package:test_app/providers/product_provider.dart';
 
-class productGridWidget extends StatelessWidget {
+class ProductGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final allProduct = Provider.of<ProductProvider>(context).allProduct;
+    final productData = Provider.of<ProductProvider>(context).allProduct;
 
     return GridView.builder(
       padding: EdgeInsets.all(8),
-      itemCount: allProduct.length,
-      itemBuilder: (context, index) => productWidget(
-        allProduct[index].id,
-        allProduct[index].title,
-        allProduct[index].imageUrl,
+      itemCount: productData.length,
+      itemBuilder: (context, index) => ChangeNotifierProvider.value(
+        value: productData[index],
+        child: ProductWidget(),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -26,45 +27,55 @@ class productGridWidget extends StatelessWidget {
   }
 }
 
-class productWidget extends StatelessWidget {
-  final String id, title, imageUrl;
-
-  productWidget(
-    this.id,
-    this.title,
-    this.imageUrl,
-  );
-
+class ProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final productModel = Provider.of<ProductModel>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
     return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: GridTile(
-          child: GestureDetector(
-            onTap: () => Navigator.of(context)
-                .pushNamed(ProductDetailPage.routeName, arguments: id),
-            child: Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
+      borderRadius: BorderRadius.circular(8),
+      child: GridTile(
+        footer: GridTileBar(
+          backgroundColor: Colors.black45,
+          leading: Consumer<ProductModel>(
+            builder: (context, productModel, child) => IconButton(
+              icon: (productModel.isFavorite)
+                  ? Icon(Icons.favorite)
+                  : Icon(Icons.favorite_border_outlined),
+              onPressed: () {
+                productModel.setFavorite();
+              },
             ),
           ),
-          footer: GridTileBar(
-            backgroundColor: Colors.black45,
-            leading: IconButton(
-              icon: Icon(Icons.favorite_border_outlined),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () {},
-            ),
-            title: Text(
-              title,
-              textAlign: TextAlign.center,
-            ),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.shopping_cart_outlined),
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+          title: Text(
+            productModel.title,
+            textAlign: TextAlign.center,
           ),
-        ));
+          trailing: IconButton(
+            icon: Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Added to Cart"),
+                  duration: Duration(seconds: 1),
+                ),
+              );
+              cartProvider.addCart(
+                  productModel.id, productModel.title, productModel.price);
+            },
+          ),
+        ),
+        child: GestureDetector(
+          onTap: () => Navigator.of(context).pushNamed(
+              ProductDetailPage.routeName,
+              arguments: productModel.id),
+          child: Image.network(
+            productModel.imageUrl,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
   }
 }

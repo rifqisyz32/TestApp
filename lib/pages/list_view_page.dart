@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/pages/product_page.dart';
+
+import 'package:test_app/pages/products/product_page.dart';
 import 'package:test_app/providers/product_provider.dart';
 
 class ListPage extends StatelessWidget {
@@ -56,14 +57,14 @@ class ListPage extends StatelessWidget {
             direction: DismissDirection.endToStart,
             background: Container(
               color: Colors.pink,
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(
+                right: 16,
+              ),
               child: Icon(
                 Icons.delete_outline,
                 size: 24,
                 color: Colors.white,
-              ),
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(
-                right: 16,
               ),
             ),
             child: ChatItem(

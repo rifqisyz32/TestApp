@@ -1,11 +1,10 @@
 import 'dart:math';
-
 import 'package:faker/faker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:test_app/models/product_model.dart';
 
 class ProductProvider with ChangeNotifier {
-  List<ProductModel> _allProduct = List.generate(
+  final List<ProductModel> _allProduct = List.generate(
     20,
     (index) => ProductModel(
       id: "id_${index + 1}",

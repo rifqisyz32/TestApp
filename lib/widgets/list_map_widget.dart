@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
 
-class listViewMap extends StatelessWidget {
-  const listViewMap({
-    super.key,
-    required this.mapData,
-  });
-
-  final List<Map<String, dynamic>> mapData;
+class MapWidget extends StatelessWidget {
+  final List<Map<String, dynamic>> myMap = const [
+    {
+      "Name": "Kamisato Ayaka",
+      "Image": "assets/images/FnhcYXYWAAEWoJx.jpeg",
+      "Title": "Shirasagi Himegimi",
+      "FavColor": ["Blue", "White", "Purple"],
+    },
+    {
+      "Name": "Raiden Ei",
+      "Image": "assets/images/FlONSy7aAAEoKNN.jpeg",
+      "Title": "Eternity",
+      "FavColor": ["Purple", "White", "Black"],
+    },
+    {
+      "Name": "Keqing",
+      "Image": "assets/images/FlARvjlaAAEmuDc.jpeg",
+      "Title": "Yuheng of Liyue",
+      "FavColor": ["Purple", "Black", "Blue"],
+    },
+    {
+      "Name": "Sangonomiya Kokomi",
+      "Image": "assets/images/Fpk100tacAA1WbU.jpeg",
+      "Title": "The Divine Priestess",
+      "FavColor": ["Blue", "Pink", "White", "Purple", "White", "Black"],
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: mapData.map((data) {
+      children: myMap.map((data) {
         List favColor = data["FavColor"];
         return Card(
           shape: RoundedRectangleBorder(
