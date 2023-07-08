@@ -56,7 +56,7 @@ class ListPage extends StatelessWidget {
                     )),
             direction: DismissDirection.endToStart,
             background: Container(
-              color: Colors.pink,
+              color: Colors.blue,
               alignment: Alignment.centerRight,
               padding: EdgeInsets.only(
                 right: 16,

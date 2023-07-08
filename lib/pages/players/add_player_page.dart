@@ -13,6 +13,41 @@ class AddPlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final player = Provider.of<PlayerProvider>(context, listen: false);
+
+    void addPlayer() {
+      player
+          .addPlayer(
+        nameController.text,
+        positionController.text,
+        imageController.text,
+      )
+          .then(
+        (value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Added Successfully"),
+              duration: Duration(seconds: 1),
+            ),
+          );
+          Navigator.pop(context);
+        },
+      ).catchError(
+        (err) => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Error $err"),
+            content: Text("Server Error"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Okay"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Player"),
@@ -21,25 +56,7 @@ class AddPlayerPage extends StatelessWidget {
             icon: Icon(
               Icons.save_outlined,
             ),
-            onPressed: () {
-              player
-                  .addPlayer(
-                nameController.text,
-                positionController.text,
-                imageController.text,
-              )
-                  .then(
-                (value) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Added Successfully"),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
-              );
-              Navigator.pop(context);
-            },
+            onPressed: addPlayer,
           ),
         ],
       ),
@@ -65,25 +82,7 @@ class AddPlayerPage extends StatelessWidget {
                 decoration: InputDecoration(labelText: "Image Url"),
                 textInputAction: TextInputAction.next,
                 controller: imageController,
-                onEditingComplete: () {
-                  player
-                      .addPlayer(
-                    nameController.text,
-                    positionController.text,
-                    imageController.text,
-                  )
-                      .then(
-                    (value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Added Successfully"),
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                  );
-                  Navigator.pop(context);
-                },
+                onEditingComplete: addPlayer,
               ),
               SizedBox(
                 height: 48,
@@ -92,29 +91,8 @@ class AddPlayerPage extends StatelessWidget {
                 width: double.infinity,
                 alignment: Alignment.centerRight,
                 child: OutlinedButton(
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {
-                    player
-                        .addPlayer(
-                      nameController.text,
-                      positionController.text,
-                      imageController.text,
-                    )
-                        .then(
-                      (value) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Added Successfully"),
-                            duration: Duration(seconds: 1),
-                          ),
-                        );
-                      },
-                    );
-                    Navigator.pop(context);
-                  },
+                  child: Text("Submit"),
+                  onPressed: addPlayer,
                 ),
               )
             ],

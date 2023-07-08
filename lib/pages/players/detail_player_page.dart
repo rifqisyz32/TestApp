@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,21 @@ class DetailPlayerPage extends StatelessWidget {
     final TextEditingController imageUrlController =
         TextEditingController(text: selectPlayer.imageUrl);
 
+    void editPlayer() {
+      player
+          .editPlayer(playerId, nameController.text, positionController.text,
+              imageUrlController.text)
+          .then(
+            (value) => ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Edited Success"),
+                duration: Duration(seconds: 1),
+              ),
+            ),
+          );
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Detail Player Page"),
@@ -31,17 +47,15 @@ class DetailPlayerPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(96),
-                  child: Container(
-                    width: 160,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      image: DecorationImage(
-                        image: NetworkImage(imageUrlController.text),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  borderRadius: BorderRadius.circular(160),
+                  child: CachedNetworkImage(
+                    height: 240,
+                    width: 240,
+                    fit: BoxFit.cover,
+                    imageUrl: imageUrlController.text,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Image.network(
+                        "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"),
                   ),
                 ),
                 TextFormField(
@@ -67,20 +81,7 @@ class DetailPlayerPage extends StatelessWidget {
                   ),
                   textInputAction: TextInputAction.next,
                   controller: imageUrlController,
-                  onEditingComplete: () {
-                    player
-                        .editPlayer(playerId, nameController.text,
-                            positionController.text, imageUrlController.text)
-                        .then(
-                          (value) => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Edited Success"),
-                              duration: Duration(seconds: 1),
-                            ),
-                          ),
-                        );
-                    Navigator.pop(context);
-                  },
+                  onEditingComplete: editPlayer,
                 ),
                 SizedBox(
                   height: 48,
@@ -89,27 +90,8 @@ class DetailPlayerPage extends StatelessWidget {
                   width: double.infinity,
                   alignment: Alignment.centerRight,
                   child: OutlinedButton(
-                    onPressed: () {
-                      player
-                          .editPlayer(playerId, nameController.text,
-                              positionController.text, imageUrlController.text)
-                          .then(
-                            (value) =>
-                                ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Edited Success"),
-                                duration: Duration(seconds: 1),
-                              ),
-                            ),
-                          );
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "Edit",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    onPressed: editPlayer,
+                    child: Text("Edit"),
                   ),
                 ),
               ],

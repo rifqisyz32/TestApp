@@ -41,13 +41,13 @@ class HTTPPage extends StatelessWidget {
               height: 24,
             ),
             SizedBox(
-              height: 100,
-              width: 100,
+              height: 240,
+              width: 240,
               child: Consumer<HTTPProvider>(
                 builder: (context, value, child) => CircleAvatar(
                   backgroundImage: NetworkImage(
                     (value.map["avatar"] == null)
-                        ? "https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png"
+                        ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"
                         : value.map["avatar"],
                   ),
                 ),
@@ -72,7 +72,8 @@ class HTTPPage extends StatelessWidget {
                 (value.map["first_name"] == null ||
                         value.map["last_name"] == null)
                     ? "Full Name: Null"
-                    : "${"Full Name: " + value.map["first_name"]} " +
+                    : "Full Name: " +
+                        value.map["first_name"] +
                         value.map["last_name"],
                 style: TextStyle(fontSize: 16),
               ),

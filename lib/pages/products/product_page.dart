@@ -6,6 +6,7 @@ import 'package:test_app/pages/list_view_page.dart';
 import 'package:test_app/pages/players/player_page.dart';
 import 'package:test_app/pages/products/cart_page.dart';
 import 'package:test_app/pages/tab_page.dart';
+import 'package:test_app/providers/auth_provider.dart';
 import 'package:test_app/providers/cart_provider.dart';
 import 'package:test_app/widgets/cart_badge.dart';
 import 'package:test_app/widgets/product_widget.dart';
@@ -42,7 +43,7 @@ class ProductPage extends StatelessWidget {
               padding: EdgeInsets.all(16),
               width: double.infinity,
               height: 160,
-              color: Colors.pinkAccent[400],
+              color: Colors.blue,
               alignment: Alignment.bottomLeft,
               child: Text(
                 "Drawer",
@@ -138,6 +139,20 @@ class ProductPage extends StatelessWidget {
                   builder: (context) => PlayerPage(),
                 ),
               ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout_outlined,
+                size: 24,
+              ),
+              title: Text(
+                "Log Out",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              onTap: () =>
+                  Provider.of<AuthProvider>(context, listen: false).logOut(),
             ),
           ],
         ),
